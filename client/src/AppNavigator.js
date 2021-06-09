@@ -8,6 +8,7 @@ import Login from "./guestScreens/Login";
 import Profile from "./authScreens/Profile";
 import { globalColors } from "./styles/globalStyles";
 import Home from "./authScreens/Home";
+import Logs from "./authScreens/Logs";
 
 export default function AppNavigator() {
   const { isAuthenticated, loading, user } = useAuth();
@@ -25,10 +26,6 @@ export default function AppNavigator() {
           screenOptions={{
             headerStyle: { backgroundColor: globalColors.Info },
             headerTintColor: globalColors.Light,
-            headerTitleStyle: {
-              fontSize: 26,
-              fontWeight: "500",
-            },
           }}
         >
           {isAuthenticated && user !== null ? (
@@ -39,8 +36,13 @@ export default function AppNavigator() {
                 options={{
                   headerTitle: "ExerLog",
                   headerRight: () => <NavigateToProfile />,
+                  headerTitleStyle: {
+                    fontSize: 26,
+                    fontWeight: "500",
+                  },
                 }}
               />
+              <Stack.Screen name="Logs" component={Logs} />
               <Stack.Screen name="Profile" component={Profile} />
             </>
           ) : (
