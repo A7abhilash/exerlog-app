@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import {
   View,
@@ -7,12 +8,53 @@ import {
   Modal,
   TouchableOpacity,
   FlatList,
+  Keyboard,
 } from "react-native";
-import { Button, Caption, TextInput } from "react-native-paper";
+import { Button, Caption, Divider, TextInput, Title } from "react-native-paper";
+import { useAuth } from "../../contexts/AuthContext";
+import { useMsg } from "../../contexts/MsgContext";
+import { getUserExercises, updateExerciseMutation } from "../../queries";
 import { globalColors } from "../../styles/globalStyles";
 
 export default function EditExercise({ editExercise, setEditExercise }) {
-  const [name, setName] = useState(editExercise.name);
+  const { user } = useAuth();
+  const { setToast } = useMsg();
+  const [name, setName] = useState(editExercise?.name);
+  const [workout, setWorkout] = useState("");
+  const [exerciseWorkouts, setExerciseWorkouts] = useState(
+    editExercise?.workouts
+  );
+  const [updateExercise] = useMutation(updateExerciseMutation);
+
+  const deleteThisWorkout = (index) => {
+    setExerciseWorkouts(exerciseWorkouts.filter((_, i) => i !== index));
+  };
+
+  const addNewWorkout = () => {
+    if (workout) {
+      setExerciseWorkouts([...exerciseWorkouts, workout]);
+      setWorkout("");
+      Keyboard.dismiss();
+    }
+  };
+
+  const handleSaveExercise = async () => {
+    let exercise = {
+      id: editExercise.id,
+      name,
+      workouts: exerciseWorkouts,
+    };
+    // console.log(exercise);
+    const res = await updateExercise({
+      variables: exercise,
+      refetchQueries: [
+        { query: getUserExercises, variables: { id: user._id } },
+      ],
+    });
+    if (res) {
+      setToast("Exercise saved...");
+    }
+  };
 
   const renderItem = ({ item, index }) => (
     <View
@@ -38,9 +80,7 @@ export default function EditExercise({ editExercise, setEditExercise }) {
           {item}
         </Text>
       </View>
-      <TouchableOpacity
-      //   onPress={() => deleteOneLog(index)}
-      >
+      <TouchableOpacity onPress={() => deleteThisWorkout(index)}>
         <Image
           source={require("../../../assets/icons/remove.png")}
           style={{
@@ -75,9 +115,34 @@ export default function EditExercise({ editExercise, setEditExercise }) {
           value={name}
           onChangeText={setName}
         />
-        {editExercise?.workouts.length ? (
+        <Divider />
+        <View style={styles.horizontalView}>
+          <TextInput
+            mode="outlined"
+            style={{
+              width: "80%",
+              height: 50,
+            }}
+            label="New Workout"
+            value={workout}
+            onChangeText={setWorkout}
+          />
+          <TouchableOpacity
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={addNewWorkout}
+          >
+            <Image
+              source={require("../../../assets/icons/add.png")}
+              style={{ width: 45, height: 45 }}
+            />
+          </TouchableOpacity>
+        </View>
+        {exerciseWorkouts?.length ? (
           <FlatList
-            data={editExercise.workouts}
+            data={exerciseWorkouts}
             keyExtractor={(item, index) => `${item + index}`}
             renderItem={renderItem}
           />
@@ -88,7 +153,7 @@ export default function EditExercise({ editExercise, setEditExercise }) {
           mode="contained"
           color={globalColors.Success}
           style={{ marginVertical: 10 }}
-          // onPress={handleCreate}
+          onPress={handleSaveExercise}
         >
           Save
         </Button>
@@ -113,6 +178,11 @@ const styles = StyleSheet.create({
   innerView: {
     marginVertical: 15,
     marginHorizontal: 20,
+  },
+  horizontalView: {
+    flexDirection: "row",
+    marginVertical: 5,
+    justifyContent: "space-around",
   },
   input: {
     marginBottom: 10,
