@@ -48,7 +48,7 @@ export default function WorkoutsForTheDay({ logs, deleteOneLog }) {
       {logs?.length ? (
         <FlatList
           data={logs}
-          keyExtractor={(item) => `${item.workout + item.exercise}`}
+          keyExtractor={(item, index) => `${item.workout + index}`}
           renderItem={renderItem}
         />
       ) : (

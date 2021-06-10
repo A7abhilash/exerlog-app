@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Caption, Subheading } from "react-native-paper";
 import { globalColors } from "../../styles/globalStyles";
 
