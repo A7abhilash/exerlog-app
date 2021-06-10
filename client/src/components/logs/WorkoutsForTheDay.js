@@ -1,6 +1,6 @@
 import React from "react";
 import { View, FlatList, Text, Image, TouchableOpacity } from "react-native";
-import { Subheading, Title } from "react-native-paper";
+import { Caption, Subheading, Title } from "react-native-paper";
 import { globalColors } from "../../styles/globalStyles";
 
 export default function WorkoutsForTheDay({ logs, deleteOneLog }) {
@@ -45,11 +45,15 @@ export default function WorkoutsForTheDay({ logs, deleteOneLog }) {
   return (
     <View>
       <Title>Workouts for the day</Title>
-      <FlatList
-        data={logs}
-        keyExtractor={(item) => `${item.workout + item.exercise}`}
-        renderItem={renderItem}
-      />
+      {logs?.length ? (
+        <FlatList
+          data={logs}
+          keyExtractor={(item) => `${item.workout + item.exercise}`}
+          renderItem={renderItem}
+        />
+      ) : (
+        <Caption>No logs found on this day...</Caption>
+      )}
     </View>
   );
 }

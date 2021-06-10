@@ -9,6 +9,7 @@ import Profile from "./authScreens/Profile";
 import { globalColors } from "./styles/globalStyles";
 import Home from "./authScreens/Home";
 import Logs from "./authScreens/Logs";
+import Exercises from "./authScreens/Exercises";
 
 export default function AppNavigator() {
   const { isAuthenticated, loading, user } = useAuth();
@@ -40,6 +41,13 @@ export default function AppNavigator() {
                     fontSize: 26,
                     fontWeight: "500",
                   },
+                }}
+              />
+              <Stack.Screen
+                name="Exercises"
+                component={Exercises}
+                options={{
+                  headerTitle: "Your Exercises & Workouts",
                 }}
               />
               <Stack.Screen name="Logs" component={Logs} />

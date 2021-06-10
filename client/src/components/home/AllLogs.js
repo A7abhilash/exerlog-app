@@ -1,6 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity, FlatList } from "react-native";
-import { Headline, Title } from "react-native-paper";
+import { Caption, Headline, Title } from "react-native-paper";
 import { globalColors } from "../../styles/globalStyles";
 
 export default function AllLogs({ list, navigateToLogScreen }) {
@@ -30,11 +30,15 @@ export default function AllLogs({ list, navigateToLogScreen }) {
       }}
     >
       <Headline>Your Logs</Headline>
-      <FlatList
-        data={list}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderItem}
-      />
+      {list?.length ? (
+        <FlatList
+          data={list}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderItem}
+        />
+      ) : (
+        <Caption>No logs added...</Caption>
+      )}
     </View>
   );
 }
