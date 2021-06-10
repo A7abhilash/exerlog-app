@@ -18,9 +18,15 @@ export default function Logs({ navigation, route }) {
     );
   }, [navigation, route]);
 
+  const deleteOneLog = (index) => {
+    setAllLogs(allLogs.filter((_, i) => i !== index));
+  };
+
   return (
     <View style={globalStyles.component}>
-      {allLogs && <WorkoutsForTheDay logs={allLogs} />}
+      {allLogs && (
+        <WorkoutsForTheDay logs={allLogs} deleteOneLog={deleteOneLog} />
+      )}
     </View>
   );
 }

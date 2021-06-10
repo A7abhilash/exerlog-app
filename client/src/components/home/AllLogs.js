@@ -8,9 +8,11 @@ export default function AllLogs({ list, navigateToLogScreen }) {
     <TouchableOpacity
       style={{
         marginVertical: 7,
+        marginHorizontal: 5,
         backgroundColor: globalColors.Light,
         borderRadius: 10,
         padding: 10,
+        elevation: 1,
       }}
       onPress={() => navigateToLogScreen(item)}
     >
