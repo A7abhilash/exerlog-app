@@ -6,9 +6,10 @@ import { getUserExercises } from "../queries";
 import { globalStyles } from "../styles/globalStyles";
 import Loading from "../containers/Loading";
 import Error_ from "../containers/Error_";
-import { Caption } from "react-native-paper";
+import { Button, Caption } from "react-native-paper";
 import ExerciseCard from "../components/exercise/ExerciseCard";
 import EditExercise from "../components/exercise/EditExercise";
+import AddExercise from "../components/exercise/AddExercise";
 
 export default function Exercises() {
   const { user } = useAuth();
@@ -16,6 +17,7 @@ export default function Exercises() {
     variables: { id: user._id },
   });
   const [editExercise, setEditExercise] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <View style={globalStyles.component}>
@@ -39,6 +41,24 @@ export default function Exercises() {
           setEditExercise={setEditExercise}
         />
       )}
+      <View
+        style={{
+          position: "absolute",
+          width: "105%",
+          bottom: 10,
+          left: 10,
+          right: 10,
+        }}
+      >
+        <Button
+          disabled={loading || error}
+          mode="contained"
+          onPress={() => setIsModalOpen(true)}
+        >
+          Add New Exercise
+        </Button>
+      </View>
+      <AddExercise isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </View>
   );
 }

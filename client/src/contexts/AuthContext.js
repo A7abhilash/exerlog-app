@@ -80,7 +80,7 @@ export function AuthProvider({ children }) {
     try {
       setLoading(true);
       AsyncStorage.getItem("accessToken").then((data) => {
-        // console.log(data);
+        console.log("Authenticated...");
         setIsAuthenticated(data ? true : false);
       });
     } catch (error) {

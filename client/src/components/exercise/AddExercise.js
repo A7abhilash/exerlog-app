@@ -1,16 +1,46 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, Modal } from "react-native";
+import { useMutation } from "@apollo/client";
+import { View, Text, StyleSheet, Image, Modal, Keyboard } from "react-native";
 import { Button, TextInput } from "react-native-paper";
+import { addNewExerciseMutation, getUserExercises } from "../../queries";
 import { globalColors } from "../../styles/globalStyles";
+import { useAuth } from "../../contexts/AuthContext";
+import { useMsg } from "../../contexts/MsgContext";
 
-export default function AddExercise({ editExercise, setEditExercise }) {
-  const [name, setName] = useState(editExercise.name);
+export default function AddExercise({ isModalOpen, setIsModalOpen }) {
+  const { user } = useAuth();
+  const { setToast } = useMsg();
+  const [name, setName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [addNewExercise] = useMutation(addNewExerciseMutation);
+
+  const handleSubmit = async () => {
+    if (name) {
+      Keyboard.dismiss();
+      setIsLoading(true);
+      let exercise = {
+        name,
+        userId: user._id,
+      };
+      let res = await addNewExercise({
+        variables: exercise,
+        refetchQueries: [
+          { query: getUserExercises, variables: { id: user._id } },
+        ],
+      });
+      if (res) {
+        setToast(
+          `New exercise: ${res.data.addNewExercise.name} added successfully!!!`
+        );
+        setIsLoading(false);
+      }
+      setIsModalOpen(false);
+      setName("");
+    }
+  };
+
   return (
-    <Modal
-      visible={editExercise !== null ? true : false}
-      animationType="fade"
-      transparent
-    >
+    <Modal visible={isModalOpen} animationType="fade" transparent>
       <View style={styles.centeredView}>
         <View style={styles.innerView}>
           <TextInput
@@ -19,28 +49,24 @@ export default function AddExercise({ editExercise, setEditExercise }) {
             label="Exercise Name"
             value={name}
             onChangeText={setName}
+            autoFocus
           />
           <Button
             mode="contained"
             color={globalColors.Success}
             style={{ marginHorizontal: 20 }}
-            // onPress={handleCreate}
+            onPress={handleSubmit}
+            disabled={isLoading}
           >
-            Save
+            Add
           </Button>
           <Button
-            color={globalColors.Secondary}
-            onPress={() => setEditExercise(null)}
-            style={styles.cancelBtn}
+            color={globalColors.Danger}
+            onPress={() => setIsModalOpen(false)}
+            style={{ marginVertical: 10 }}
+            disabled={isLoading}
           >
-            <Image
-              source={require("../../../assets/icons/remove.png")}
-              style={{
-                width: 20,
-                height: 20,
-                resizeMode: "contain",
-              }}
-            />
+            Cancel
           </Button>
         </View>
       </View>
@@ -72,17 +98,11 @@ const styles = StyleSheet.create({
     backgroundColor: globalColors.Light,
     elevation: 5,
     paddingHorizontal: 10,
-    paddingVertical: 15,
+    paddingTop: 15,
   },
   input: {
     marginBottom: 10,
     marginHorizontal: 20,
     height: 55,
-  },
-  cancelBtn: {
-    position: "absolute",
-    right: -20,
-    top: -20,
-    backgroundColor: globalColors.Light,
   },
 });
