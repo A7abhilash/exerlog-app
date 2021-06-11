@@ -56,6 +56,7 @@ export function AuthProvider({ children }) {
       .then((data) => {
         // console.log(data);
         if (data.email) {
+          console.log("Authenticated...");
           let currentUser = {
             firstName: data.given_name,
             lastName: data.family_name,
@@ -80,7 +81,7 @@ export function AuthProvider({ children }) {
     try {
       setLoading(true);
       AsyncStorage.getItem("accessToken").then((data) => {
-        console.log("Authenticated...");
+        // console.log(data);
         setIsAuthenticated(data ? true : false);
       });
     } catch (error) {

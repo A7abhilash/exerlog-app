@@ -11,7 +11,8 @@ export default function WorkoutsForTheDay({ logs, deleteOneLog }) {
         marginHorizontal: 5,
         backgroundColor: globalColors.Light,
         borderRadius: 10,
-        padding: 5,
+        paddingVertical: 7,
+        paddingHorizontal: 10,
         alignItems: "center",
         justifyContent: "space-between",
         flexDirection: "row",
@@ -19,7 +20,9 @@ export default function WorkoutsForTheDay({ logs, deleteOneLog }) {
       }}
     >
       <View>
-        <Subheading style={{ marginBottom: 0 }}>{item.workout}</Subheading>
+        <Subheading style={{ marginBottom: 0, fontSize: 18 }}>
+          {item.workout}
+        </Subheading>
         <Text
           style={{
             marginTop: 0,
@@ -43,7 +46,7 @@ export default function WorkoutsForTheDay({ logs, deleteOneLog }) {
   );
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <Title>Workouts for the day</Title>
       {logs?.length ? (
         <FlatList

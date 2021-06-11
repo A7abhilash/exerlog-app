@@ -75,6 +75,7 @@ export default function EditExercise({ editExercise, setEditExercise }) {
           style={{
             marginTop: 0,
             color: globalColors.Primary,
+            fontSize: 16,
           }}
         >
           {item}
