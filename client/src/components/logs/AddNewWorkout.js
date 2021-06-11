@@ -7,6 +7,7 @@ import { getUserExercises } from "../../queries";
 import SelectCard from "./SelectCard";
 import Loading from "../../containers/Loading";
 import Error_ from "../../containers/Error_";
+import { globalColors } from "../../styles/globalStyles";
 
 export default function AddNewWorkout({ addNewWorkoutForTheDay }) {
   const { user } = useAuth();
@@ -38,7 +39,7 @@ export default function AddNewWorkout({ addNewWorkoutForTheDay }) {
       {data && (
         <View
           style={{
-            marginVertical: 10,
+            marginBottom: 10,
             padding: 5,
             borderColor: "#eee",
             borderWidth: 1,
@@ -86,16 +87,15 @@ export default function AddNewWorkout({ addNewWorkoutForTheDay }) {
           )}
 
           <Button
-            mode="contained"
             style={{
               marginVertical: 10,
             }}
+            color={globalColors.Primary}
             onPress={handleSubmit}
             disabled={exercise === "" || workout === ""}
           >
             Add Workout
           </Button>
-          <Divider />
         </View>
       )}
     </>
