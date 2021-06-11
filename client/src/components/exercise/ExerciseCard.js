@@ -1,9 +1,41 @@
+import { useMutation } from "@apollo/client";
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { Caption, Subheading } from "react-native-paper";
+import { useAuth } from "../../contexts/AuthContext";
+import { useMsg } from "../../contexts/MsgContext";
+import { deleteExerciseMutation, getUserExercises } from "../../queries";
 import { globalColors } from "../../styles/globalStyles";
 
 export default function ExerciseCard({ exercise, setEditExercise }) {
+  const { user } = useAuth();
+  const { setToast } = useMsg();
+  const [deleteExercise] = useMutation(deleteExerciseMutation);
+
+  const handleDeleteExercise = async (id) => {
+    let res = await deleteExercise({
+      variables: { id },
+      refetchQueries: [
+        { query: getUserExercises, variables: { id: user._id } },
+      ],
+    });
+    if (res.data.deleteExercise.id === id) {
+      setToast("Exercise deleted successfully");
+    }
+  };
+
+  const handleDelete = (id) => {
+    Alert.alert("Confirm", "Are you sure to delete this exercise?", [
+      {
+        text: "Cancel",
+      },
+      {
+        text: "Yes",
+        onPress: () => handleDeleteExercise(id),
+      },
+    ]);
+  };
+
   return (
     <TouchableOpacity
       style={{
@@ -11,13 +43,16 @@ export default function ExerciseCard({ exercise, setEditExercise }) {
         marginHorizontal: 5,
         backgroundColor: globalColors.Light,
         borderRadius: 10,
-        paddingVertical: 5,
+        paddingVertical: 7,
         paddingHorizontal: 10,
         elevation: 1,
       }}
       onPress={() => setEditExercise(exercise)}
+      onLongPress={() => handleDelete(exercise.id)}
     >
-      <Subheading style={{ marginBottom: 0 }}>{exercise.name}</Subheading>
+      <Subheading style={{ marginBottom: 0, fontSize: 18 }}>
+        {exercise.name}
+      </Subheading>
       <View
         style={{
           flexDirection: "row",

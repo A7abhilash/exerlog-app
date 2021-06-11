@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@apollo/client";
-import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
+import { View, FlatList } from "react-native";
 import { useAuth } from "../contexts/AuthContext";
 import { getUserExercises } from "../queries";
 import { globalStyles } from "../styles/globalStyles";
