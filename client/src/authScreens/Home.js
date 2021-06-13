@@ -56,7 +56,15 @@ export default function Home({ navigation }) {
   };
 
   useEffect(() => {
-    setList(data?.user?.logs);
+    if (data) {
+      setList(
+        [...data?.user?.logs].sort(
+          (a, b) =>
+            new Date(a.date).getTime().toString() <
+            new Date(b.date).getTime().toString()
+        )
+      );
+    }
   }, [data]);
 
   return (
