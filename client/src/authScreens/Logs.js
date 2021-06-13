@@ -29,12 +29,20 @@ export default function Logs({ navigation, route }) {
     });
     setCurrentLog(item);
     setAllLogs(
-      item.logs?.map(({ exercise, workout }) => ({ exercise, workout }))
+      item.logs?.map(({ exercise, workout }) => ({ exercise, workout })) || []
     );
   }, [navigation, route]);
 
   const addNewWorkoutForTheDay = (newLog) => {
-    setAllLogs([...allLogs, newLog]);
+    let tempLogs = allLogs.filter((item) => item.exercise === newLog.exercise);
+    let tempWorkout = tempLogs.filter(
+      (item) => item.workout === newLog.workout
+    );
+    if (!tempWorkout.length) {
+      setAllLogs([...allLogs, newLog]);
+    } else {
+      setToast("Workout already exists for the day!!!");
+    }
   };
 
   const deleteOneLog = (index) => {
