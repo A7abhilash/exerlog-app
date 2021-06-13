@@ -34,7 +34,7 @@
   "scripts": {
     "start": "node server",
     "server": "nodemon server",
-    "client": "cd .. && cd frontend && npm start",
+    "client": "cd .. && cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "A7",
