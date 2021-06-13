@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, Image } from "react-native";
-import { globalColors, globalStyles } from "../styles/globalStyles";
+import { globalColors } from "../styles/globalStyles";
 import { useMutation, useQuery } from "@apollo/client";
 import { useAuth } from "../contexts/AuthContext";
 import { addNewLogMutation, getUserLogsQuery } from "../queries/";
 import Loading from "../containers/Loading";
 import AllLogs from "../components/home/AllLogs";
-import AddNewLog from "../components/home/AddNewLog";
+import Header from "../components/home/Header";
 import Error_ from "../containers/Error_";
 import { useMsg } from "../contexts/MsgContext";
 
@@ -68,15 +68,46 @@ export default function Home({ navigation }) {
   }, [data]);
 
   return (
-    <View style={globalStyles.component}>
-      <AddNewLog addNewLog={newLog} />
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: globalColors.Info,
+        paddingTop: 25,
+      }}
+    >
       {loading && <Loading />}
       {error && <Error_ />}
       {data && (
-        <AllLogs
-          list={list}
-          navigateToLogScreen={(item) => navigation.navigate("Logs", { item })}
-        />
+        <>
+          <View
+            style={{
+              flex: 0.3,
+              paddingHorizontal: 20,
+            }}
+          >
+            <Header
+              user={user}
+              newLog={newLog}
+              navigationToProfile={() => navigation.navigate("Profile")}
+            />
+          </View>
+          <View
+            style={{
+              flex: 0.7,
+              paddingHorizontal: 20,
+              borderTopLeftRadius: 35,
+              borderTopRightRadius: 35,
+              backgroundColor: globalColors.Light,
+            }}
+          >
+            <AllLogs
+              list={list}
+              navigateToLogScreen={(item) =>
+                navigation.navigate("Logs", { item })
+              }
+            />
+          </View>
+        </>
       )}
       <View
         style={{

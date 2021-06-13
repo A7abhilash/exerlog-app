@@ -22,6 +22,7 @@ export default function ({ addNewLog }) {
     <>
       <Button
         mode="contained"
+        icon={require("../../../assets/icons/calendar.png")}
         color={globalColors.Primary}
         onPress={() => setOpenCalender((prev) => !prev)}
       >

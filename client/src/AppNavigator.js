@@ -1,4 +1,5 @@
 import React from "react";
+import { StatusBar } from "expo-status-bar";
 import { TouchableOpacity, Image } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -23,6 +24,11 @@ export default function AppNavigator() {
   return (
     isAuthenticated !== null && (
       <NavigationContainer>
+        <StatusBar
+          style="auto"
+          backgroundColor="blue"
+          barStyle={globalColors.Info}
+        />
         <Stack.Navigator
           screenOptions={{
             headerStyle: { backgroundColor: globalColors.Info },
@@ -35,12 +41,11 @@ export default function AppNavigator() {
                 name="Home"
                 component={Home}
                 options={{
-                  headerTitle: "ExerLog",
-                  headerRight: () => <NavigateToProfile />,
                   headerTitleStyle: {
                     fontSize: 26,
                     fontWeight: "500",
                   },
+                  headerShown: false,
                 }}
               />
               <Stack.Screen
@@ -65,25 +70,3 @@ export default function AppNavigator() {
     )
   );
 }
-
-const NavigateToProfile = () => {
-  const navigation = useNavigation();
-
-  return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate("Profile")}
-      style={{ marginRight: 10 }}
-    >
-      <Image
-        source={require("./../assets/icons/user.png")}
-        style={{
-          width: 24,
-          height: 24,
-          resizeMode: "center",
-          tintColor: globalColors.Light,
-          marginRight: 10,
-        }}
-      />
-    </TouchableOpacity>
-  );
-};

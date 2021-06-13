@@ -1,6 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity, FlatList } from "react-native";
-import { Caption, Headline, Title } from "react-native-paper";
+import { Caption, Title, Subheading } from "react-native-paper";
 import { globalColors } from "../../styles/globalStyles";
 
 export default function AllLogs({ list, navigateToLogScreen }) {
@@ -12,7 +12,7 @@ export default function AllLogs({ list, navigateToLogScreen }) {
         backgroundColor: globalColors.Light,
         borderRadius: 10,
         padding: 10,
-        elevation: 1,
+        elevation: 2,
       }}
       onPress={() => navigateToLogScreen(item)}
     >
@@ -23,17 +23,21 @@ export default function AllLogs({ list, navigateToLogScreen }) {
   return (
     <View
       style={{
-        marginVertical: 10,
-        paddingTop: 5,
-        borderTopColor: globalColors.Info,
-        borderTopWidth: 1,
+        paddingTop: 10,
+        paddingBottom: 40,
       }}
     >
-      <Headline>Your Logs</Headline>
+      <Subheading
+        style={{
+          color: globalColors.Info,
+        }}
+      >
+        Your Logs
+      </Subheading>
       {list?.length ? (
         <FlatList
           data={list}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item, index) => (item.id + index).toString()}
           renderItem={renderItem}
         />
       ) : (
