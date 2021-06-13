@@ -15,7 +15,7 @@ export default function Home({ navigation }) {
   const { setToast, setAlert } = useMsg();
   const [list, setList] = useState([]);
   const { data, loading, error } = useQuery(getUserLogsQuery, {
-    variables: { id: user._id },
+    variables: { id: user?._id },
   });
   const [addNewLog] = useMutation(addNewLogMutation);
 

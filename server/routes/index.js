@@ -12,9 +12,10 @@ router.post("/newUser", async (req, res) => {
     if (user) {
       return res.json({ msg: "User logged in successfully!!!", user });
     }
-    user = await User.create(newUser);
+    user = await Users.create(newUser);
     return res.json({ msg: "New user created successfully!!!", user });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: error.message });
   }
 });

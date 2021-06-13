@@ -11,9 +11,7 @@ const resolvers = {
     // return { id, name, profileImg, exercises };
     let { _id, displayName, image } = await Users.findById(parent.id);
     let exercises = await Exercises.find({ userId: parent.id });
-    let logs = await Logs.find({ userId: parent.id }).sort({
-      createdAt: "desc",
-    });
+    let logs = await Logs.find({ userId: parent.id });
     return { id: _id, name: displayName, profileImg: image, exercises, logs };
   },
   addNewExercise: async (parent, args) => {
